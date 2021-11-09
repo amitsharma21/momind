@@ -19,9 +19,9 @@ router.use(
   })
 );
 
-router.post("/create", createBlog);
-router.get("/fetchsingle/:id", fetchSingleBlog);
-router.get("/fetchall", fetchAllBlogs);
+router.post("/", createBlog);
+router.get("/fetch/:id", fetchSingleBlog);
+router.get("/fetch", fetchAllBlogs);
 router.patch("/update/:id", updateBlog);
 router.delete("/delete/:id", deleteBlog);
 
