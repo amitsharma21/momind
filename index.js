@@ -10,8 +10,6 @@ import faqRoutes from "./routes/faq.js";
 import contactusRoutes from "./routes/contactus.js";
 import termsAndConditionsRoutes from "./routes/termsandcondition.js";
 import privacyPolicyRoutes from "./routes/privacypolicy.js";
-import remainderRoutes from "./routes/remainder.js";
-import noteRoutes from "./routes/note.js";
 import feelingRoutes from "./routes/feeling.js";
 import blogRoutes from "./routes/blog.js";
 import musicRoutes from "./routes/music.js";
@@ -44,10 +42,6 @@ app.use("/contactus", contactusRoutes);
 app.use("/tac", termsAndConditionsRoutes);
 //privacy policy route
 app.use("/privacypolicy", privacyPolicyRoutes);
-//remaider route
-app.use("/remainder", remainderRoutes);
-//notes route
-app.use("/note", noteRoutes);
 //feeling route
 app.use("/feeling", feelingRoutes);
 //blog route

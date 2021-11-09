@@ -9,9 +9,9 @@ import {
 
 const router = express.Router();
 
-router.get("/fetchall", fetchAllFaq);
-router.get("/fetchsingle/:id", fetchSingleFaq);
-router.post("/create", createFaq);
+router.get("/fetch", fetchAllFaq);
+router.get("/fetch/:id", fetchSingleFaq);
+router.post("/", createFaq);
 router.delete("/delete/:id", deleteFaq);
 
 export default router;

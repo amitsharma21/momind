@@ -12,9 +12,9 @@ import userAuth from "../middleware/userAuth.js";
 
 const router = express.Router();
 
-router.post("/create", userAuth, createFeeling);
-router.get("/fetchall", userAuth, fetchAllFeelings);
-router.get("/fetchsingle/:id", userAuth, fetchSingleFeelingById);
+router.post("/", userAuth, createFeeling);
+router.get("/fetch", userAuth, fetchAllFeelings);
+router.get("/fetch/:id", userAuth, fetchSingleFeelingById);
 // router.get("/fetchall/:date", userAuth, fetchFeelingByDate);
 router.patch("/update/:id", userAuth, updateFeeling);
 router.delete("/delete/:id", userAuth, deleteFeeling);
