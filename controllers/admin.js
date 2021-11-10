@@ -25,7 +25,7 @@ export const signin = async (req, res) => {
     const token = jwt.sign(
       { email: existingAdmin.email, id: existingAdmin._id },
       "test",
-      { expiresIn: "1s" }
+      { expiresIn: "1d" }
     );
     res.status(200).json({ result: existingAdmin, token });
   } catch (error) {
@@ -59,7 +59,7 @@ export const signup = async (req, res) => {
     const token = jwt.sign(
       { email: result.email, id: result._id },
       /* at 2nd argument position we need to enter the secret string */ "test",
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
 
     //sending back the details of the created user

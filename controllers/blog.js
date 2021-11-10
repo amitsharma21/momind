@@ -41,6 +41,7 @@ export const createBlog = async (req, res) => {
       body,
       creationDate: new Date(),
       updateDate: new Date(),
+      active: true,
     });
 
     res.status(200).json(result);
@@ -78,7 +79,7 @@ export const fetchAllBlogs = async (req, res) => {
     });
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -150,6 +151,19 @@ export const deleteBlog = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json({ message: error.message });
+  }
+};
+
+//-----------------------------toggle status--------------------------------
+export const toggleBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await Blog.findById(id);
+    blog.active = !blog.active;
+    const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true });
+    res.status(200).json(updatedBlog);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

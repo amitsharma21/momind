@@ -7,6 +7,7 @@ import {
   fetchAllBlogs,
   updateBlog,
   deleteBlog,
+  toggleBlog,
 } from "../controllers/blog.js";
 
 const router = express.Router();
@@ -24,5 +25,6 @@ router.get("/fetch/:id", fetchSingleBlog);
 router.get("/fetch", fetchAllBlogs);
 router.patch("/update/:id", updateBlog);
 router.delete("/delete/:id", deleteBlog);
+router.patch("/toggle/:id", toggleBlog);
 
 export default router;
