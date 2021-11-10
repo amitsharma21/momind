@@ -12,6 +12,7 @@ export const createBlog = async (req, res) => {
   try {
     const file = req.files.blogImage;
     const { title, description, tags, body } = req.body;
+    const tagsArray = tags.split(",");
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
@@ -35,9 +36,11 @@ export const createBlog = async (req, res) => {
     const result = await Blog.create({
       title,
       description,
-      tags,
+      tags: tagsArray,
       image: fileName,
       body,
+      creationDate: new Date(),
+      updateDate: new Date(),
     });
 
     res.status(200).json(result);
@@ -85,6 +88,7 @@ export const updateBlog = async (req, res) => {
     const { id } = req.params;
     const file = req.files.blogImage;
     const { title, description, tags, body } = req.body;
+    const tagsArray = tags.split(",");
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
@@ -109,9 +113,10 @@ export const updateBlog = async (req, res) => {
       {
         title,
         description,
-        tags,
+        tags: tagsArray,
         image: fileName,
         body,
+        updateDate: new Date(),
       },
       { new: true }
     );
@@ -124,7 +129,6 @@ export const updateBlog = async (req, res) => {
 
     res.status(200).json(updatedBlog);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };

@@ -21,6 +21,7 @@ import lifeStatementRoutes from "./routes/lifeStatement.js";
 import affirmationRoutes from "./routes/affirmation.js";
 import weeklyPlansRoutes from "./routes/weeklyPlans.js";
 import pillBoxRoutes from "./routes/pillBox.js";
+import momindMinuteRoutes from "./routes/momindMinute.js";
 
 const app = express();
 app.use(express.static("public"));
@@ -64,6 +65,8 @@ app.use("/affirmation", affirmationRoutes);
 app.use("/weeklyplan", weeklyPlansRoutes);
 //pillBox
 app.use("/pillbox", pillBoxRoutes);
+//momindMinute
+app.use("/momindminute", momindMinuteRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to the momind API version 1.0");
 });

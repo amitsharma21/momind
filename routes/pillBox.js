@@ -11,8 +11,8 @@ import {
 
 const router = express.Router();
 
-router.post("/create", userAuth, createPillBox);
-router.get("/fetchall", userAuth, fetchAllPillBox);
+router.post("/", userAuth, createPillBox);
+router.get("/fetch", userAuth, fetchAllPillBox);
 router.get("/fetch/:id", userAuth, fetchSinglePillBox);
 router.delete("/delete/:id", userAuth, deletePillBox);
 

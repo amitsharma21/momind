@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.post("/create", userAuth, createLifeStatement);
+router.post("/", userAuth, createLifeStatement);
 router.get("/fetch/:givendate", userAuth, fetchLifeStatement);
 
 export default router;

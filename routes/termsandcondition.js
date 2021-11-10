@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 router.get("/fetch", fetchTermsAndConditions);
-router.post("/create", createTermsAndConditions);
+router.post("/", createTermsAndConditions);
 router.patch("/update", updateTermsAndConditions);
 
 export default router;

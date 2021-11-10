@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.post("/create", userAuth, createAffirmation);
+router.post("/", userAuth, createAffirmation);
 router.get("/fetch/:givendate", userAuth, fetchAffirmation);
 
 export default router;

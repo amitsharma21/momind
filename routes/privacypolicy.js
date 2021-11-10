@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 router.get("/fetch", fetchPrivacyPolicy);
-router.post("/create", createPrivacyPolicy);
+router.post("/", createPrivacyPolicy);
 router.patch("/update", updatePrivacyPolicy);
 
 export default router;

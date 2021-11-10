@@ -6,7 +6,7 @@ import { createPlan, fetchPlan } from "../controllers/weeklyPlans.js";
 
 const router = express.Router();
 
-router.post("/create", userAuth, createPlan);
+router.post("/", userAuth, createPlan);
 router.get("/fetch/:givendate", userAuth, fetchPlan);
 
 export default router;

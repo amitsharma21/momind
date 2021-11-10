@@ -5,6 +5,6 @@ import { fetchContactus, createContactus } from "../controllers/contactus.js";
 const router = express.Router();
 
 router.get("/fetch", fetchContactus);
-router.post("/create", createContactus);
+router.post("/", createContactus);
 
 export default router;
