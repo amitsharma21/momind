@@ -1,31 +1,31 @@
-import Category from "../models/category.js";
+import SubCategory from "../models/subCategory.js";
 
-//creating the category it takes "title" and "description" as a req body
-export const createCategory = async (req, res) => {
+//creating the sub category it takes "title" and "description" as a req body
+export const createSubCategory = async (req, res) => {
   try {
     const { title, description } = req.body;
-    const result = await Category.create({ title, description });
+    const result = await SubCategory.create({ title, description });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-//fetching all the Categories
-export const fetchAllCategories = async (req, res) => {
+//fetching all the Sub Categories
+export const fetchAllSubCategories = async (req, res) => {
   try {
-    const result = await Category.find();
+    const result = await SubCategory.find();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-//fetching single category
-export const fetchSingleCategory = async (req, res) => {
+//fetching single sub category
+export const fetchSingleSubCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await Category.findById(id);
+    const result = await SubCategory.findById(id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -33,11 +33,11 @@ export const fetchSingleCategory = async (req, res) => {
 };
 
 //updating the Category it takes the id of Category
-export const updateCategory = async (req, res) => {
+export const updateSubCategory = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, description } = req.body;
-    const result = await Category.findByIdAndUpdate(
+    const result = await SubCategory.findByIdAndUpdate(
       id,
       { title, description },
       { new: true }
@@ -48,11 +48,11 @@ export const updateCategory = async (req, res) => {
   }
 };
 
-//deleting the Category it takes the id of Category
-export const deleteCategory = async (req, res) => {
+//deleting the sub Category it takes the id of Category
+export const deleteSubCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await Category.findByIdAndDelete(id);
+    const result = await SubCategory.findByIdAndDelete(id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });

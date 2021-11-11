@@ -4,19 +4,21 @@ import MomindMinute from "../models/momindMinute.js";
 export const createMomindMinute = async (req, res) => {
   try {
     const { title, description } = req.body;
-    const lastMomindMinute = MomindMinute.findOne(
-      {},
-      { sort: { $natural: -1 } }
-    );
-    console.log(lastMomindMinute);
+    const allMomindMinutes = await MomindMinute.find();
+    let lastSequenceNumber = 0;
+    for (var i = 0; i < allMomindMinutes.length; i++) {
+      if (allMomindMinutes[i].sequenceNumber > lastSequenceNumber) {
+        lastSequenceNumber = allMomindMinutes[i].sequenceNumber;
+      }
+    }
     const result = await MomindMinute.create({
-      sequenceNumber: lastMomindMinute.sequenceNumber + 1,
+      sequenceNumber: lastSequenceNumber + 1,
       title,
       description,
     });
-    res.status(200).json(result);
+    return res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: "something went wrong!" });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -24,20 +26,36 @@ export const createMomindMinute = async (req, res) => {
 export const fetchAllMomindMinute = async (req, res) => {
   try {
     const result = await MomindMinute.find();
-    res.status(200).json(result);
+    return res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: "something went wrong!" });
+    return res.status(500).json({ message: error.message });
   }
 };
 
 //fetching single momind minute it takes id as param
 export const fetchSingleMomindMinute = async (req, res) => {
   try {
-    const { id } = req.params;
-    const result = await MomindMinute.findById(id);
-    res.status(200).json(result);
+    const { sequencenumber } = req.params;
+    const result = await MomindMinute.find({ sequenceNumber: sequencenumber });
+    return res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: "something went wrong" });
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+//update the momind minute it takes the id of mm as param
+export const updateMomindMinute = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description } = req.body;
+    const result = await MomindMinute.findByIdAndUpdate(
+      id,
+      { title, description },
+      { new: true }
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -46,8 +64,8 @@ export const deleteMomindMinute = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await MomindMinute.findByIdAndDelete(id);
-    res.status(200).json(result);
+    return res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: "something went wrong!" });
+    return res.status(500).json({ message: error.message });
   }
 };

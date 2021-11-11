@@ -17,11 +17,13 @@ import videoRoutes from "./routes/video.js";
 import motivationRoutes from "./routes/motivation.js";
 import guidedMeditationRoutes from "./routes/guidedMeditation.js";
 import categoryRoutes from "./routes/category.js";
+import subCategoryRoutes from "./routes/subCategory.js";
 import lifeStatementRoutes from "./routes/lifeStatement.js";
 import affirmationRoutes from "./routes/affirmation.js";
 import weeklyPlansRoutes from "./routes/weeklyPlans.js";
 import pillBoxRoutes from "./routes/pillBox.js";
 import momindMinuteRoutes from "./routes/momindMinute.js";
+import pricingPlanRoutes from "./routes/pricingPlans.js";
 
 const app = express();
 app.use(express.static("public"));
@@ -57,6 +59,8 @@ app.use("/motivation", motivationRoutes);
 app.use("/guidedmeditation", guidedMeditationRoutes);
 //category
 app.use("/category", categoryRoutes);
+//sub category
+app.use("/subcategory", subCategoryRoutes);
 //lifestatement
 app.use("/lifestatement", lifeStatementRoutes);
 //affirmation
@@ -67,6 +71,8 @@ app.use("/weeklyplan", weeklyPlansRoutes);
 app.use("/pillbox", pillBoxRoutes);
 //momindMinute
 app.use("/momindminute", momindMinuteRoutes);
+//pricingPlans
+app.use("/pricingplan", pricingPlanRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to the momind API version 1.0");
 });

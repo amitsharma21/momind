@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
   referralCode: { type: String, required: false },
   musicFavourite: { type: [String], default: [] },
   guidedMeditationFavourite: { type: [String], default: [] },
+  momindMinuteSequenceNumber: { type: Number, default: 0, required: true },
 });
 
 export default mongoose.model("User", userSchema);

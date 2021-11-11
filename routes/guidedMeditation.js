@@ -21,7 +21,7 @@ router.use(
   })
 );
 
-router.post("/create", createGuidedMeditation);
+router.post("/", createGuidedMeditation);
 router.delete("/delete/:id", deleteGuidedMeditation);
 router.get("/fetchall", fetchAllGuidedMeditation);
 router.get("/fetchsingle/:id", fetchSingleGuidedMeditation);

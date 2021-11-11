@@ -5,9 +5,10 @@ const guidedMeditationSchema = mongoose.Schema({
   description: { type: String, required: true },
   tags: { type: [String], required: true },
   thumbnail: { type: String, required: false },
-  audioTracks: { type: [String], default: [] },
-  videoTracks: { type: [String], default: [] },
+  audioTracks: { type: [String], default: [], required: true },
+  videoTracks: { type: [String], default: [], required: true },
   category: { type: String, required: true },
+  plan: { type: String },
 });
 
 export default mongoose.model("GuidedMeditation", guidedMeditationSchema);
