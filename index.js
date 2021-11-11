@@ -18,6 +18,8 @@ import motivationRoutes from "./routes/motivation.js";
 import guidedMeditationRoutes from "./routes/guidedMeditation.js";
 import categoryRoutes from "./routes/category.js";
 import subCategoryRoutes from "./routes/subCategory.js";
+import audioCategoryRoutes from "./routes/audioCategory.js";
+import audioSubCategoryRoutes from "./routes/audioSubCategory.js";
 import lifeStatementRoutes from "./routes/lifeStatement.js";
 import affirmationRoutes from "./routes/affirmation.js";
 import weeklyPlansRoutes from "./routes/weeklyPlans.js";
@@ -61,6 +63,10 @@ app.use("/guidedmeditation", guidedMeditationRoutes);
 app.use("/category", categoryRoutes);
 //sub category
 app.use("/subcategory", subCategoryRoutes);
+//audio category
+app.use("/audiocategory", audioCategoryRoutes);
+//audio subcategory
+app.use("/audiosubcategory", audioSubCategoryRoutes);
 //lifestatement
 app.use("/lifestatement", lifeStatementRoutes);
 //affirmation

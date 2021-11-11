@@ -1,4 +1,6 @@
-import bcrypt from "bcryptjs";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
 import twilio from "twilio";
 import dotenv from "dotenv";
@@ -31,7 +33,7 @@ export const signin = async (req, res) => {
     );
     res.status(200).json({ result: existingUser, token });
   } catch (error) {
-    res.status(500).json({ message: "something went wrong!" });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -67,7 +69,7 @@ export const signup = async (req, res) => {
     //sending back the details of the created user
     res.status(200).json({ result, token });
   } catch (error) {
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -88,7 +90,7 @@ export const fetchSingle = async (req, res) => {
     const result = await User.findById(id);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -102,7 +104,7 @@ export const generateOtp = async (req, res) => {
       res.status(200).json({ status: verification.status });
     })
     .catch((error) => {
-      res.status(404).json({ message: "unsuccessfull" });
+      res.status(404).json({ message: error.message });
     });
 };
 
@@ -118,58 +120,136 @@ export const verifyOtp = async (req, res) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(404).json({ message: "unsuccessfull" });
+      res.status(404).json({ message: error.message });
     });
 };
 
 //----------------------------change Name---------------------------------
 export const changeName = async (req, res) => {
-  const { id } = req.params;
+  if (!req.userId)
+    return res.status(404).json({ message: "user is not authenticated" });
   try {
     const { name } = req.body;
     const result = await User.findOneAndUpdate(
-      { _id: id },
+      { _id: req.userId },
       { name: name },
       { new: true }
     );
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json({ message: error.message });
   }
 };
 
 //-------------------------change email--------------------------
 export const changeEmail = async (req, res) => {
-  const { id } = req.params;
+  if (!req.userId)
+    return res.status(404).json({ message: "user is not authenticated" });
   try {
     const { email } = req.body;
+    const existingUser = await User.find({ email: email });
+    if (existingUser.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "user with given email already exist" });
+    }
     const result = await User.findOneAndUpdate(
-      { _id: id },
+      { _id: req.userId },
       { email: email },
       { new: true }
     );
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json({ message: error.message });
   }
 };
 
-//-----------------------change password -------------------------
-export const changePassword = async (req, res) => {
-  const { id } = req.params;
+//-------------------------change Phone Number--------------------------
+export const changePhoneNumber = async (req, res) => {
+  if (!req.userId)
+    return res.status(404).json({ message: "user is not authenticated" });
   try {
-    const { password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 12 /*salt number*/);
+    const { phoneNumber } = req.body;
+    const existingUser = await User.find({ phoneNumber: phoneNumber });
+    if (existingUser.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "user with given Phone Number already exist" });
+    }
     const result = await User.findOneAndUpdate(
-      { _id: id },
-      { password: hashedPassword },
+      { _id: req.userId },
+      { phoneNumber: phoneNumber },
       { new: true }
     );
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json({ message: error.message });
+  }
+};
+
+//-------------------------upload profile picture---------------------------------
+export const uploadProfilePicture = async (req, res) => {
+  if (!req.userId)
+    return res.status(404).json({ message: "user is not authenticated" });
+  try {
+    const profilePicture = req.files.profilePicture;
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const profilePictureName =
+      new Date().getTime().toString() +
+      req.userId +
+      path.extname(profilePicture.name);
+    //checking profile picture size
+    if (profilePicture.truncated) throw new Error("Picture size is too big");
+
+    //checking Picture type
+    if (
+      profilePicture.mimetype !== "image/png" &&
+      profilePicture.mimetype !== "image/jpg" &&
+      profilePicture.mimetype !== "image/jpeg"
+    )
+      throw new Error("Picture type not supported");
+
+    // saving picture to the folder
+    const savePath = path.join(
+      __dirname,
+      "../public/images/users",
+      profilePictureName
+    );
+    await profilePicture.mv(savePath);
+
+    //deleting the previous picture of the user from the folder
+    const currentUser = await User.findById(req.userId);
+    const previousProfilePicture = currentUser.profilePicture;
+    if (previousProfilePicture !== "") {
+      const pathToPreviousProfielPicture = path.join(
+        __dirname,
+        "../public/images/users",
+        previousProfilePicture
+      );
+
+      fs.unlinkSync(pathToPreviousProfielPicture);
+    }
+
+    //saving the profile picture to the db
+
+    const result = await User.findOneAndUpdate(
+      { _id: req.userId },
+      { profilePicture: profilePictureName },
+      { new: true }
+    );
+    //changing the name of profile picture to the url of the picture
+    result.profilePicture = path.join(
+      process.env.BASIC_ROUTE,
+      "images/users",
+      profilePictureName
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };

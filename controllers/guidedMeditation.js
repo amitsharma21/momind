@@ -11,8 +11,7 @@ dotenv.config();
 //----------------------create Guided Meditation---------------------------------------
 export const createGuidedMeditation = async (req, res) => {
   try {
-    const { title, description, category, tags, audioTracks, videoTracks } =
-      req.body;
+    const { title, description, category, audioTracks, videoTracks } = req.body;
     const thumbnail = req.files.thumbnail;
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);

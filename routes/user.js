@@ -1,4 +1,5 @@
 import express from "express";
+import fileUpload from "express-fileupload";
 
 import {
   signup,
@@ -9,11 +10,20 @@ import {
   verifyOtp,
   changeName,
   changeEmail,
-  changePassword,
+  changePhoneNumber,
+  uploadProfilePicture,
 } from "../controllers/user.js";
 import signupMiddleware from "../middleware/signup.js";
+import userAuth from "../middleware/userAuth.js";
 
 const router = express.Router();
+
+router.use(
+  fileUpload({
+    createParentPath: true,
+    limits: { fileSize: 2 * 1024 * 1024 },
+  })
+);
 
 //auth
 router.post("/signup", signup);
@@ -30,8 +40,9 @@ router.post("/generateotp", generateOtp);
 router.post("/verifyotp", verifyOtp);
 
 //updating profile
-router.patch("/changename/:id", changeName);
-router.patch("/changeemail/:id", changeEmail);
-router.patch("/changepassword/:id", changePassword);
+router.patch("/changename", userAuth, changeName);
+router.patch("/changeemail", userAuth, changeEmail);
+router.patch("/changephonenumber", userAuth, changePhoneNumber);
+router.patch("/profilepic", userAuth, uploadProfilePicture);
 
 export default router;
