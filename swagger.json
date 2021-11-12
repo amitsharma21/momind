@@ -1,0 +1,14 @@
+{
+  "swaggerDefination": {
+    "info": {
+      "version": "1.0.0",
+      "title": "Momind",
+      "description": "Momin",
+      "contact": {
+        "name": "Amit Sharma"
+      },
+      "servers": ["http://localhost:5000"]
+    },
+    "apis": ["./routes/*.js"]
+  }
+}

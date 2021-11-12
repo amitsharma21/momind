@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
 
 import userRoutes from "./routes/user.js";
 import adminRoutes from "./routes/admin.js";
@@ -12,6 +14,7 @@ import termsAndConditionsRoutes from "./routes/termsandcondition.js";
 import privacyPolicyRoutes from "./routes/privacypolicy.js";
 import feelingRoutes from "./routes/feeling.js";
 import blogRoutes from "./routes/blog.js";
+import audioRoutes from "./routes/audio.js";
 import musicRoutes from "./routes/music.js";
 import videoRoutes from "./routes/video.js";
 import motivationRoutes from "./routes/motivation.js";
@@ -35,6 +38,22 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Momind Api",
+      version: "1.0.0",
+      description: "This is documentation of Momind API's",
+    },
+    servers: [{ url: "http://localhost:5000" }],
+  },
+
+  apis: ["./routes/*.js"],
+};
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+
 //dashboard routes
 app.use("/admin", adminRoutes);
 //normal user routes
@@ -51,6 +70,8 @@ app.use("/privacypolicy", privacyPolicyRoutes);
 app.use("/feeling", feelingRoutes);
 //blog route
 app.use("/blog", blogRoutes);
+//audio route
+app.use("/audio", audioRoutes);
 //music route
 app.use("/music", musicRoutes);
 //video route

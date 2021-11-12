@@ -141,13 +141,19 @@ export const deleteBlog = async (req, res) => {
 
     const result = await Blog.findByIdAndDelete(id);
 
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
+    if (result.image !== "") {
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = path.dirname(__filename);
 
-    const fileName = result.image;
-    const pathToFile = path.join(__dirname, "../public/images/blogs", fileName);
+      const fileName = result.image;
+      const pathToFile = path.join(
+        __dirname,
+        "../public/images/blogs",
+        fileName
+      );
 
-    fs.unlinkSync(pathToFile);
+      fs.unlinkSync(pathToFile);
+    }
 
     res.status(200).json(result);
   } catch (error) {
