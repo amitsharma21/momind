@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
+import cloudinary from "cloudinary";
 
 import userRoutes from "./routes/user.js";
 import adminRoutes from "./routes/admin.js";
@@ -37,6 +38,11 @@ dotenv.config();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+cloudinary.config({
+  cloud_name: "doxyjt4me",
+  api_key: "799992757568834",
+  api_secret: "TXtSOOev-nFfgGxed9-rNQgYAQo",
+});
 
 const swaggerOptions = {
   definition: {

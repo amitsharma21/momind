@@ -2,22 +2,60 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+import cloudinary from "cloudinary";
 
 import Blog from "../models/blog.js";
 
 dotenv.config();
 
 //----------------------------create blog--------------------------------------------
+// export const createBlog = async (req, res) => {
+//   try {
+//     const file = req.files.blogImage;
+//
+//     const { title, description, tags, body } = req.body;
+//     const tagsArray = tags.split(",");
+
+//     const __filename = fileURLToPath(import.meta.url);
+//     const __dirname = path.dirname(__filename);
+//     const fileName = new Date().getTime().toString() + path.extname(file.name);
+
+//     //checking file size
+//     if (file.truncated) throw new Error("File size is too big");
+
+//     //checking file type
+//     if (
+//       file.mimetype !== "image/png" &&
+//       file.mimetype !== "image/jpg" &&
+//       file.mimetype !== "image/jpeg"
+//     )
+//       throw new Error("File type not supported");
+//     // saving file to the folder
+//     const savePath = path.join(__dirname, "../public/images/blogs", fileName);
+//     await file.mv(savePath);
+
+//     //saving data to the database
+//     const result = await Blog.create({
+//       title,
+//       description,
+//       tags: tagsArray,
+//       image: fileName,
+//       body,
+//       creationDate: new Date(),
+//       updateDate: new Date(),
+//       active: true,
+//     });
+
+//     res.status(200).json(result);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+//----------------------------create blog--------------------------------------------
 export const createBlog = async (req, res) => {
   try {
     const file = req.files.blogImage;
-    const { title, description, tags, body } = req.body;
-    const tagsArray = tags.split(",");
-
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const fileName = new Date().getTime().toString() + path.extname(file.name);
-
     //checking file size
     if (file.truncated) throw new Error("File size is too big");
 
@@ -28,23 +66,27 @@ export const createBlog = async (req, res) => {
       file.mimetype !== "image/jpeg"
     )
       throw new Error("File type not supported");
-    // saving file to the folder
-    const savePath = path.join(__dirname, "../public/images/blogs", fileName);
-    await file.mv(savePath);
+    cloudinary.v2.uploader.upload(file.tempFilePath, async (error, result) => {
+      if (error) {
+        return res.status(404).json({ message: "something went wrong" });
+      } else {
+        const { title, description, tags, body } = req.body;
+        const tagsArray = tags.split(",");
+        //saving data to the database
+        const blog = await Blog.create({
+          title,
+          description,
+          tags: tagsArray,
+          image: result.url,
+          body,
+          creationDate: new Date(),
+          updateDate: new Date(),
+          active: true,
+        });
 
-    //saving data to the database
-    const result = await Blog.create({
-      title,
-      description,
-      tags: tagsArray,
-      image: fileName,
-      body,
-      creationDate: new Date(),
-      updateDate: new Date(),
-      active: true,
+        res.status(200).json(blog);
+      }
     });
-
-    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

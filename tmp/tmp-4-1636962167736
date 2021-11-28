@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   
+      <!-- <video width="320" height="240" controls>
+        <source src="http://localhost:5000/video/stream/616fc7ab786febb33fc00151" type="video/mp4">
+        
+      </video> -->
+      <audio controls>
+        <source src="https://umersion-node-backend.herokuapp.com/music/stream/616fecb1f0707e75b0d2f3c6" type="audio/mp3">
+      </audio>
+</body>
+</html>

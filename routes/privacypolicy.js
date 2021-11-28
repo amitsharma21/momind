@@ -75,7 +75,7 @@ router.post("/", createPrivacyPolicy);
 
 /**
  * @swagger
- * /privacypolicy/update:
+ * /privacypolicy/update/{id}:
  *  patch:
  *    summary: Update the Privacy Policy
  *    tags: [PrivacyPolicy]
